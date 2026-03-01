@@ -1,0 +1,47 @@
+.app-container {
+  width: 100%;
+  height: 100%;
+}
+
+.main-content {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 800;
+  margin-bottom: 20px;
+  background: linear-gradient(to bottom right, #000000, #666666);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.04em;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
