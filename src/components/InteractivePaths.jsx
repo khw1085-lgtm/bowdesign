@@ -16,8 +16,9 @@ export default function InteractivePaths() {
         if (!ctx) return;
 
         const updateCanvasSize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            if (!canvas.parentElement) return;
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
             setIsMobile(window.innerWidth < 1024);
         };
 
@@ -30,7 +31,7 @@ export default function InteractivePaths() {
         function createTextImage() {
             if (!ctx || !canvas) return 0;
 
-            ctx.fillStyle = 'white';
+            ctx.fillStyle = 'black';
             ctx.save();
 
             // Refined font sizes for better responsiveness down to 375px
@@ -47,7 +48,7 @@ export default function InteractivePaths() {
 
             // Padding from the left
             const startX = isVerySmall ? 24 : (isMobile ? 40 : 100);
-            const centerY = canvas.height / 2;
+            const centerY = window.innerHeight / 2;
 
             // Positioning for two lines
             ctx.fillText(line1, startX, centerY - lineSpacing / 2);
@@ -81,8 +82,8 @@ export default function InteractivePaths() {
                         baseX: x,
                         baseY: y,
                         size: Math.random() * 1.2 + 0.5,
-                        color: 'white',
-                        scatteredColor: isLine2 ? '#FF9900' : '#00DCFF',
+                        color: 'black',
+                        scatteredColor: isLine2 ? '#FF9900' : '#0099CC',
                         isLine2: isLine2,
                         life: Math.random() * 100 + 50,
                     };
@@ -106,7 +107,7 @@ export default function InteractivePaths() {
         function animate() {
             if (!ctx || !canvas) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = 'white';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const { x: mouseX, y: mouseY } = mousePositionRef.current;
@@ -130,7 +131,7 @@ export default function InteractivePaths() {
                 } else {
                     p.x += (p.baseX - p.x) * 0.1;
                     p.y += (p.baseY - p.y) * 0.1;
-                    ctx.fillStyle = 'white';
+                    ctx.fillStyle = 'black';
                 }
 
                 ctx.fillRect(p.x, p.y, p.size, p.size);
@@ -218,25 +219,15 @@ export default function InteractivePaths() {
     }, [isMobile]);
 
     return (
-        <div className="relative w-full h-dvh flex flex-col items-start justify-center bg-black overflow-hidden font-sans">
+        <div
+            className="relative w-full max-w-[1500px] mx-auto flex flex-col items-start justify-center bg-white overflow-hidden font-sans"
+            style={{ height: 'calc(50vh + 350px)' }}
+        >
             <canvas
                 ref={canvasRef}
                 className="w-full h-full absolute top-0 left-0 touch-none"
                 aria-label="Interactive particle effect text"
             />
-
-            {/* Scroll Indicator - Horizontally centered */}
-            <div className="absolute bottom-8 left-0 w-full flex justify-center pointer-events-none z-20">
-                <motion.div
-                    animate={{ y: [0, 10, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="flex flex-col items-center"
-                >
-                    <span className="text-white/40 text-[10px] tracking-[0.3em] uppercase mb-4">discover more</span>
-                    <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent" />
-                    <ChevronDown className="text-white/40 w-4 h-4 mt-2" />
-                </motion.div>
-            </div>
         </div>
     );
 }
